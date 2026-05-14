@@ -60,10 +60,8 @@ python app_launcher.py
 
 | Usuario | Contraseña | Rol |
 |---------|-----------|-----|
-| Romina | L4R4M3N | Admin completo |
-| Luis | L4R4Luis | Solo lectura |
-
-Para cambiar las credenciales, copiar `.env.example` como `.env` y completar los valores antes de correr.
+| AUT | 12345 | Admin completo |
+| ROT | 123456 | Solo lectura |
 
 ---
 
