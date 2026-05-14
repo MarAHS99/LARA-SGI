@@ -5,8 +5,8 @@ Dos usuarios: admin y viewer (solo lectura).
 Credenciales via variables de entorno (.env):
     LARA_USER           usuario admin
     LARA_PASSWORD       contrasena admin
-    LARA_USER_LUIS      usuario viewer
-    LARA_PASSWORD_LUIS  contrasena viewer
+    LARA_USER_OBS       usuario viewer
+    LARA_PASSWORD_OBS   contrasena viewer
 """
 
 import os
@@ -52,10 +52,10 @@ def _verificar(password: str, hashed: str) -> bool:
 
 
 def _cargar_usuarios() -> dict:
-    admin_user = os.getenv("LARA_USER", "Romina")
-    admin_pass = os.getenv("LARA_PASSWORD", "L4R4M3N")
-    luis_user  = os.getenv("LARA_USER_LUIS", "Luis")
-    luis_pass  = os.getenv("LARA_PASSWORD_LUIS", "L4R4Luis")
+    admin_user = os.getenv("LARA_USER", "AUT")
+    admin_pass = os.getenv("LARA_PASSWORD", "12345")
+    luis_user  = os.getenv("LARA_USER_LUIS", "ROT")
+    luis_pass  = os.getenv("LARA_PASSWORD_LUIS", "126456")
     return {
         admin_user: {"hash": _hashear(admin_pass), "rol": "admin"},
         luis_user:  {"hash": _hashear(luis_pass),  "rol": "viewer"},
