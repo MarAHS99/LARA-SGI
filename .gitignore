@@ -1,0 +1,32 @@
+# Base de datos
+*.db
+*.sqlite
+*.sqlite3
+
+# PyInstaller
+dist/
+build/
+*.spec.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# Entorno
+venv/
+env/
+.env
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Instalador generado
+installer/
