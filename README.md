@@ -1,114 +1,145 @@
-# 🐄 L.A.R.A Menudencias
+# L.A.R.A SGI — Integrated Management System
 
-**Sistema interno de gestión comercial** para una distribuidora de achuras en Miramar, Argentina.
-
-Desarrollado con Python + FastAPI corriendo como aplicación de escritorio nativa mediante PyWebView — sin dependencias de internet, sin servidores externos, todo local.
-
----
-
-## ¿Qué hace?
-
-L.A.R.A cubre el ciclo completo de operación de la distribuidora:
-
-- **Ventas** — carga de boletas con ID semántico, saldo anterior automático, pagos de entrega, notas, historial paginado con filtros
-- **Compras** — registro por proveedor con kilos y unidades opcionales
-- **Precios** — generales y por cliente, con resolución automática al cargar boleta
-- **Cuentas corrientes** — por cliente y proveedor, con pagos manuales y automáticos
-- **Achureros** — registro de gastos por jornada (fecha, achurero, monto, localidad)
-- **Cierre del período** — rango de fechas, detalle por localidad → cliente, total neto real
-- **Análisis** — dashboard con comparativa de períodos, tendencias, rentabilidad por producto, clientes inactivos
-- **Excel** — exportación completa con grilla de productos, CC clientes, gastos achureros, CC proveedores y margen neto destacado
-- **Multi-usuario** — admin con acceso completo / viewer solo lectura
+> A real-world fullstack business management system built for a meat byproducts distributor in Argentina.  
+> Designed, sold, and developed by a single developer. Currently in active implementation with the client.
 
 ---
 
-## Stack técnico
+## 📸 Screenshots
 
-| Capa | Tecnología |
-|------|-----------|
-| Backend | FastAPI + SQLAlchemy + SQLite |
-| Frontend | Vanilla HTML / CSS / JS |
-| Desktop | PyWebView + uvicorn en thread |
-| Exports | openpyxl |
-| Auth | PBKDF2-HMAC-SHA256 + rate limiting |
-| Empaquetado | PyInstaller + Inno Setup |
+| Dashboard — Monthly Summary | Profitability by Product |
+|---|---|
+| ![Dashboard](screenshots/lara-1.png) | ![Profitability](screenshots/lara-2.png) |
+
+| Invoice Creation | Accounts Receivable |
+|---|---|
+| ![Invoice](screenshots/lara-3.png) | ![Accounts](screenshots/lara-4.png) |
+
+| Daily Closing Report |
+|---|
+| ![Closing](screenshots/lara-5.png) |
 
 ---
 
-## Instalación para desarrollo
+## 🧩 What is L.A.R.A SGI?
+
+L.A.R.A SGI (Integrated Management System) is an internal business management system built to replace a full Excel-based workflow for a meat byproducts distribution company in Miramar, Argentina.
+
+The system handles the complete operational cycle of the business: invoice creation with automatic balance and payment calculation, per-product profitability tracking, client account management grouped by location, and daily analytical reporting with date-range filters.
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python · FastAPI · SQLAlchemy |
+| Database | SQLite → PostgreSQL (migration in progress) |
+| Frontend | Vanilla JavaScript · HTML · CSS |
+| Design | Custom design system — CSS variables · Syne / DM Sans / DM Mono · Industrial dark palette |
+| Packaging | PyWebView · PyInstaller · Inno Setup |
+
+---
+
+## ✅ Features — Current (Implemented)
+
+**Authentication**
+- Cookie-based session login and logout
+- Password change functionality
+
+**Invoice Management**
+- Create, edit, and delete invoices with semantic ID generation
+- Automatic previous balance calculation
+- Automatic payment registration on delivery (non-editable, flagged as AUTO)
+
+**Accounts Receivable**
+- Full account history with filters by date, client, and location
+- Accounts grouped by geographic location
+
+**Pricing**
+- General price list management
+- Per-client special pricing
+
+**Stock**
+- Theoretical stock calculated from last manual count
+- Purchase logging and history
+
+**Master Data (Full CRUD)**
+- Clients · Suppliers · Products · Vendors
+- Drag & drop reordering for all entities
+
+**Analytics Dashboard**
+- Period-over-period comparisons (today / week / month / year vs previous period)
+- Per-product profitability table: kg sold · revenue · cost · margin $ · margin %
+- Daily closing report with date-range filters and Excel export
+- Product sales ranking
+
+---
+
+## 🚧 Roadmap — In Progress
+
+- [ ] Desktop app packaging with PyWebView + PyInstaller (native window, no visible browser)
+- [ ] Native installer via Inno Setup (wizard-style setup, generates desktop shortcut)
+- [ ] PostgreSQL migration for production
+- [ ] PDF export of daily closing report in company-specific format
+
+---
+
+## 🏗️ Architecture Overview
+
+```
+client (browser / desktop window via PyWebView)
+        │
+        ▼
+FastAPI (REST API)
+        │
+        ├── SQLAlchemy ORM
+        │         │
+        │         ▼
+        │     SQLite (dev) → PostgreSQL (prod)
+        │
+        └── Static files (HTML · CSS · JS)
+```
+
+---
+
+## 🚀 Running Locally
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/lara-menudencias.git
-cd lara-menudencias
+# Clone the repository
+git clone https://github.com/MarAHS99/LARA-SGI.git
+cd LARA-SGI
 
-# 2. Instalar dependencias
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 
-# 3. Correr migraciones (primera vez)
-python migratecancomp.py
-python migratev06.py
-python migrate_gastos_achurero.py
-
-# 4. Levantar la app
-python app_launcher.py
+# Run the development server
+uvicorn main:app --reload
 ```
 
----
-
-## Credenciales por defecto
-
-| Usuario | Contraseña | Rol |
-|---------|-----------|-----|
-| AUT | 12345 | Admin completo |
-| ROT | 123456 | Solo lectura |
+> ⚠️ Source code available upon request. Contact: aguirre.marcelo.ext@gmail.com
 
 ---
 
-## Empaquetado como .exe
+## 👨‍💻 Developer
 
-```bash
-pip install pyinstaller
-pyinstaller lara.spec
-```
+**Marcelo Nazareth Aguirre**  
+Fullstack Developer · La Plata, Argentina
 
-El ejecutable queda en `dist/LARA/LARA.exe`.
-Para generar el instalador, compilar `lara_installer.iss` con [Inno Setup](https://jrsoftware.org/isinfo.php).
-
-La base de datos se almacena en `AppData\Local\LARAMenudencias\lara.db` — no se borra al desinstalar.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/marcelo-nazareth-aguirre-aa4a94251/)
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=flat&logo=github&logoColor=white)](https://github.com/MarAHS99)
+[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:aguirre.marcelo.ext@gmail.com)
 
 ---
 
-## Estructura del proyecto
+## 📄 License
 
-```
-├── app_launcher.py          # Entry point — PyWebView + uvicorn
-├── main.py                  # App FastAPI + middleware
-├── models.py                # ORM SQLAlchemy
-├── schemas.py               # Validaciones Pydantic
-├── database.py              # Engine + session
-├── routers/                 # Endpoints por módulo
-│   ├── auth.py
-│   ├── boletas.py
-│   ├── compras.py
-│   ├── analisis.py
-│   ├── exportar.py
-│   └── ...
-├── static/                  # Frontend
-│   ├── index.html
-│   ├── script.js
-│   ├── styles.css
-│   └── assets/
-├── lara.spec                # Config PyInstaller
-└── lara_installer.iss       # Config Inno Setup
-```
+© 2026 Marcelo Nazareth Aguirre. All Rights Reserved. See [LICENSE](LICENSE) for details.
 
 ---
 
-## Contexto
-
-Proyecto personal desarrollado para uso interno real en una distribuidora familiar. El objetivo era reemplazar el registro manual en papel/Excel por un sistema robusto, rápido y fácil de usar desde Windows sin ninguna dependencia externa.
-
----
-
-*Desarrollado por Marcelo Aguirre — Miramar, Argentina*
+*Built with Python · FastAPI · SQLAlchemy · SQLite · HTML · CSS · JavaScript*
